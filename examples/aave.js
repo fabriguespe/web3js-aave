@@ -4,7 +4,7 @@ const Web3 = require("web3");
 const web3 = new Web3(new Web3.providers.HttpProvider('https://api.avax-test.network/ext/bc/C/rpc'))
 
 //Wallet from
-const privateKey1 = '67633be8c32db5414951db4a9ea9734b1214f8f5ca15d6b16818c0b4ee864653' // Private key of account 1
+const privateKey1 = '' // Private key of account 1
 const signer = web3.eth.accounts.privateKeyToAccount(privateKey1)
 web3.eth.accounts.wallet.add(signer);
 
