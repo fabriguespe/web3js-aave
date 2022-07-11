@@ -15,11 +15,15 @@ const privateKey1 = 'HERE'
 Then install packages and run command
 
 ```sh
-// with yarn
-yarn install 
+yarn install / npm install
+```
+
+Finally run this command in node tu see the result.
+
+```sh
 node examples/aave
 ```
 
-This will print the requested functionalities.
+
 
 <br />
