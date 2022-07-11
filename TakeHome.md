@@ -2,162 +2,103 @@
 
 <h1 align="center">Aave Excersise</h1>
 
-
 <br />
 
 ## Installation
 
-Aave utilities are available as npm packages,
-[contract helpers](https://www.npmjs.com/package/@aave/contract-helpers) and
-[math utils](https://www.npmjs.com/package/@aave/math-utils)
-
-[ethers v5](https://docs.ethers.io/v5/) and [reflect-metadata](reflect metadata)
-are peer dependencies of the contract-helpers package
+First fill the first variable with your private key
 
 ```sh
-// with npm
-npm install --save-dev ethers reflect-metadata
-npm install @aave/contract-helpers @aave/math-utils
-
-// with yarn
-yarn add --dev ethers reflect-metadata
-yarn add @aave/contract-helpers @aave/math-utils
+const privateKey1 = 'HERE'
 ```
+
+Then install packages and run command
+
+```sh
+// with yarn
+yarn install 
+node examples/aave
+```
+
+This will print the requested functionalities.
 
 <br />
 
 ## Features
 
-1.  [Data Formatting Methods](#title)
-    - a. [Fetching Protocol Data](#1)
-    - b. [Format Reserve Data](#reserve-data)
-    - c. [Format User Data](#user-data)
-    - d. [Format User Data](#user-data)
+- 1. [How can I get a list of the recent liquidations on the Aave Polygon V3 market?](#1)
+- 2. [How do I get my token listed on Aave?](#2)
+- 3. [How often do token prices update and based upon which price service?](#user-data)
+- 4. [I’m interested in building a liquidation bot, what do I need to get started on this?](#user-data)
     
 <br />
 
-# Data Formatting Methods
-
-Users interact with the Aave protocol through a set of smart contracts. The
-`@aave/math-utils` package is a collection of methods to take raw input data
-from these contracts, and format to use on a frontend interface such as
-[Aave Ui](https://github.com/aave/aave-ui) or
-[Aave info](https://github.com/sakulstra/info.aave)
-
-## Fetching Protocol Data
-
-Input data for these methods can be obtained in a variety of ways with some
-samples below:
-
-- [ethers](#ethers.js)
-- [Subgraph](#subgraph)
-- [Caching Server](#caching-server)
-
-<br />
-
-### ethers.js
-
-[ethers.js](https://docs.ethers.io/v5/) is a library for interacting with
-Ethereum and other EVM compatible blockchains. To install:
-
-The first step to query contract data with ethers is to inialize a `provider`,
-there are a [variety](https://docs.ethers.io/v5/api/providers/) to choose from,
-all of them requiring the an rpcURL
-
-The sample code below includes an example of initializing a provider, and using
-it query the helper contract data which can be passed directly into data
-formatting methods.
-
-
 1.) How can I get a list of the recent liquidations on the Aave Polygon V3 market?
 
-
-<details>
-	<summary>Sample Code</summary>
-
-```ts
-import { ethers } from 'ethers';
-import {
-  UiPoolDataProvider,
-  UiIncentiveDataProvider,
-  ChainId,
-} from '@aave/contract-helpers';
-
-// Sample RPC address for querying ETH mainnet
-const provider = new ethers.providers.JsonRpcProvider(
-  'https://eth-mainnet.alchemyapi.io/v2/demo',
-);
-
-// This is the provider used in Aave UI, it checks the chainId locally to reduce RPC calls with frequent network switches, but requires that the rpc url and chainId to remain consistent with the request being sent from the wallet (i.e. actively detecting the active chainId)
-const provider = new ethers.providers.StaticJsonRpcProvider(
-  'https://eth-mainnet.alchemyapi.io/v2/demo',
-  ChainId.mainnet,
-);
-
-// Aave protocol contract addresses, will be different for each market and can be found at https://docs.aave.com/developers/deployed-contracts/deployed-contracts
-// For V3 Testnet Release, contract addresses can be found here https://github.com/aave/aave-ui/blob/feat/arbitrum-clean/src/ui-config/markets/index.ts
-const uiPoolDataProviderAddress = '0xa2DC1422E0cE89E1074A6cd7e2481e8e9c4415A6';
-const uiIncentiveDataProviderAddress =
-  '0xD01ab9a6577E1D84F142e44D49380e23A340387d';
-const lendingPoolAddressProvider = '0xB53C1a33016B2DC2fF3653530bfF1848a515c8c5';
-
-// User address to fetch data for
-const currentAccount = '';
-
-// View contract used to fetch all reserves data (including market base currency data), and user reserves
-const poolDataProviderContract = new UiPoolDataProvider({
-  uiPoolDataProviderAddress,
-  provider,
-  chainId: ChainId.mainnet,
-});
-
-// View contract used to fetch all reserve incentives (APRs), and user incentives
-const incentiveDataProviderContract = new UiIncentiveDataProvider({
-  uiIncentiveDataProviderAddress,
-  provider,
-  chainId: ChainId.mainnet,
-});
-
-// Note, contract calls should be performed in an async block, and updated on interval or on network/market change
-
-// Object containing array of pool reserves and market base currency data
-// { reservesArray, baseCurrencyData }
-const reserves = await poolDataProviderContract.getReservesHumanized({
-  lendingPoolAddressProvider,
-});
-
-// Object containing array or users aave positions and active eMode category
-// { userReserves, userEmodeCategoryId }
-const userReserves = await poolDataProviderContract.getUserReservesHumanized({
-  lendingPoolAddressProvider,
-  currentAccount,
-});
-
-// Array of incentive tokens with price feed and emission APR
-const reserveIncentives =
-  await incentiveDataProviderContract.getReservesIncentivesDataHumanized({
-    lendingPoolAddressProvider,
-  });
-
-// Dictionary of claimable user incentives
-const userIncentives =
-  await incentiveDataProviderContract.getUserReservesIncentivesDataHumanized({
-    lendingPoolAddressProvider,
-    currentAccount,
-  });
-```
-
-These four variables are passed as parameters into the [reserve](#reserve-data)
-and [user](#user-data) formatters to compute all of the fields needed for a
-frontend interface.
-
-</details>
+A liquidation is a process that occurs when a borrower's health factor goes below 1 due to their collateral value not properly covering their loan/debt value. This might happen when the collateral decreases in value or the borrowed debt increases in value against each other. This collateral vs loan value ratio is shown in the health factor.
+In a liquidation, up to 50% of a borrower's debt is repaid and that value + liquidation fee is taken from the collateral available, so after a liquidation that amount liquidated from your debt is repaid.
 
 
 2.) How do I get my token listed on Aave?
 
+Aave protocol allows you to add new tokens as whitelisted currency that can be used for deposits and borrows. 
+
+Listing a token is a very straightforward process that consists in 4 steps:
+
+-Proposing the asset via ARC process (off-chain)
+
+As with all governance upgrades, an ARC process is recommended for listing a new token. This is a formal document presenting the information needed about the token and a template can be found here
+
+-Prepare for the on-chain process (on-chain)
+
+1. Create a Pull Request with your token parameters
+-fork from the protocol-v2 repository@aave-v2-asset-listing
+-add your token addresses to markets/aave/index.ts 
+-create your reserve parameters inside markets/aave/reservesConfigs.ts 
+-update the types to include your token in /helpers/types 
+-add the current price in the MOCK_CHAINLINK_AGGREGATORS_PRICES object in markets/aave/commons.ts 
+-create a PR with your changes. An example PR can be found here
+
+2. Run the asset deployment script
+From the protocol-v2 repository, 
+```ts
+$ npm install
+$ SYMBOL="Your Symbol" npm run external:deploy-assets-kovan to deploy on kovan
+$ SYMBOL="Your Symbol" npm run external:deploy-assets-main to deploy on mainnet
+```
+
+This will deploy the following contracts and display the addresses:
+
+-AToken
+-variableDebt 
+-stableDebt 
+-InterestRateStrategy
+
+You will need them for the last step.
+
+-Deploy the on-chain proposal
+For requesting Aave Governance to initialize your assets you will need AIP IPFS hash. After that you have to deploy the on-chain proposal following these instructions 
+
+-Follow up
+You will need to connect with Aave Genesis team, to add your token price oracle as a source.
+
 
 3.) How often do token prices update and based upon which price service?
 
+https://docs.aave.com/developers/v/2.0/the-core-protocol/price-oracle
 
 4.) I’m interested in building a liquidation bot, what do I need to get started on this?
+
+Depending on your environment, preferred programming tools and languages, your bot should:
+-Ensure it has enough (or access to enough) funds when liquidating.
+-Calculate the profitability of liquidating loans vs gas costs, taking into account the most lucrative collateral to liquidate.
+-Ensure it has access to the latest protocol user data.
+-Have the usual fail safes and security you'd expect for any production service.
+
+For calculating profitability you should consider this :
+-Store and retrieve each collateral's relevant details such as address, decimals used, and liquidation bonus as listed here. 
+-Get the user's collateral balance (aTokenBalance).
+-Get the asset's price according to the Aave's oracle contract (getAssetPrice()).
+-The maximum collateral bonus you can receive will be the collateral balance (2) multiplied by the liquidation bonus (1) multiplied by the collateral asset's price in ETH (3). Note that for assets such as USDC, the number of decimals are different from other assets.
+-The maximum cost of your transaction will be your gas price multiplied by the amount of gas used. You should be able to get a good estimation of the gas amount used by calling estimateGas via your web3 provider.
+-Your approximate profit will be the value of the collateral bonus (4) minus the cost of your transaction (5).
