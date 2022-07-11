@@ -12,14 +12,15 @@ const signer = web3.eth.accounts.privateKeyToAccount(privateKey1)
 web3.eth.accounts.wallet.add(signer);
 
 //Contracts
-const pool_contract_addr='0xb47673b7a73D78743AFF1487AF69dBB5763F00cA'
 const usdc_avax_address='0x3E937B4881CBd500d05EeDAB7BA203f2b7B3f74f'
 const usdc_contract = new web3.eth.Contract(ERC20_ABI, usdc_avax_address)
+const pool_contract_addr='0xb47673b7a73D78743AFF1487AF69dBB5763F00cA'
 const pool_contract = new web3.eth.Contract(lendingPoolABI,pool_contract_addr)
 const underlyingTokensToSupply = 10 * Math.pow(10, 6)
 
 const main = async () => {
-    //Check balance
+    //Check balance. We use 6 as the decimals places that USDC has. Each token has each own decimal places. For reference Ether has 18.
+    //We also send the wallet that we want to check the balance of. Doesnt need to be signed or ours, but in this case for the example we use our same wallet.
     await checkBalanceUSDC(signer.address,6)
     await approveUSDC()
     await supply()
