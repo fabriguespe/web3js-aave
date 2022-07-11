@@ -9,12 +9,6 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@aave/contract-helpers": "^1.3.8",
-    "@aave/math-utils": "^1.3.8",
-    "decimal.js": "^10.3.1",
-    "ethers": "^5.6.9",
-    "reflect-metadata": "^0.1.13",
-    "rxjs": "^7.5.5",
     "web3": "^1.7.4"
   }
 }
