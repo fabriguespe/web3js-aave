@@ -1,10 +1,10 @@
 
 ## Features
 
-- 1. [How can I get a list of the recent liquidations on the Aave Polygon V3 market?](#1)
-- 2. [How do I get my token listed on Aave?](#2)
-- 3. [How often do token prices update and based upon which price service?](#user-data)
-- 4. [I’m interested in building a liquidation bot, what do I need to get started on this?](#user-data)
+1. How can I get a list of the recent liquidations on the Aave Polygon V3 market?
+2. How do I get my token listed on Aave?
+3. How often do token prices update and based upon which price service?
+4. I’m interested in building a liquidation bot, what do I need to get started on this?
     
 <br />
 
@@ -20,13 +20,14 @@ Aave protocol allows you to add new tokens as whitelisted currency that can be u
 
 Listing a token is a very straightforward process that consists in 4 steps:
 
--Proposing the asset via ARC process (off-chain)
+-**Proposing the asset via ARC process (off-chain)**
 
 As with all governance upgrades, an ARC process is recommended for listing a new token. This is a formal document presenting the information needed about the token and a template can be found here
 
--Prepare for the on-chain process (on-chain)
+-**Prepare for the on-chain process (on-chain)**
 
 1. Create a Pull Request with your token parameters
+
 -fork from the protocol-v2 repository@aave-v2-asset-listing
 -add your token addresses to markets/aave/index.ts 
 -create your reserve parameters inside markets/aave/reservesConfigs.ts 
@@ -45,16 +46,16 @@ $ SYMBOL="Your Symbol" npm run external:deploy-assets-main to deploy on mainnet
 This will deploy the following contracts and display the addresses:
 
 -AToken
--variableDebt 
--stableDebt 
+-variableDebt
+-stableDebt
 -InterestRateStrategy
 
 You will need them for the last step.
 
--Deploy the on-chain proposal
+-**Deploy the proposal** 
 For requesting Aave Governance to initialize your assets you will need AIP IPFS hash. After that you have to deploy the on-chain proposal following these instructions 
 
--Follow up
+-**Follow up**
 You will need to connect with Aave Genesis team, to add your token price oracle as a source.
 
 
