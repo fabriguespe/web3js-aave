@@ -28,60 +28,12 @@ yarn add @aave/contract-helpers @aave/math-utils
 
 ## Features
 
-1.  [Data Formatting Methods](#data-formatting-methods)
-    - a. [Fetching Protocol Data](#fetching-protocol-data)
-      - [ethers](#ethersjs)
-      - [Subgraph](#subgraph)
-      - [Caching Server](#caching-server)
+1.  [Data Formatting Methods](#title)
+    - a. [Fetching Protocol Data](#1)
     - b. [Format Reserve Data](#reserve-data)
-      - [formatReserves](#formatReserves)
-      - [formatReservesAndIncentives](#formatReservesAndIncentives)
     - c. [Format User Data](#user-data)
-      - [formatUserSummary](#formatUserSummary)
-      - [formatUserSummaryAndIncentives](#formatUserSummaryAndIncentives)
-2.  [Transaction Methods](#transaction-methods)
-    - a. [Submitting Transactions](#submitting-transactions)
-    - b. [Pool V3](#pool-v3)
-      - [supply](#supply)
-      - [signERC20Approval](#signERC20Approval)
-      - [supplyWithPermit](#supply-with-permit)
-      - [borrow](<#borrow-(v3)>)
-      - [repay](<#repay-(v3)>)
-      - [repayWithPermit](#repayWithPermit)
-      - [repayWithATokens](#repayWithATokens)
-      - [withdraw](<#withdraw-(v3)>)
-      - [swapBorrowRateMode](<#swapBorrowRateMode-(v3)>)
-      - [setUsageAsCollateral](<#setUsageAsCollateral-(v3)>)
-      - [liquidationCall](<#liquidationCall-(v3)>)
-      - [swapCollateral](<#swapCollateral-(v3)>)
-      - [repayWithCollateral](<#repayWithCollateral-(v3)>)
-      - [setUserEMode](#setUserEMode)
-    - c. [Lending Pool V2](#lending-pool-v2)
-      - [deposit](#deposit)
-      - [borrow](#borrow)
-      - [repay](#repay)
-      - [withdraw](#withdraw)
-      - [swapBorrowRateMode](#swapBorrowRateMode)
-      - [setUsageAsCollateral](#setUsageAsCollateral)
-      - [liquidationCall](#liquidationCall)
-      - [swapCollateral](#swapCollateral)
-      - [repayWithCollateral](#repayWithCollateral)
-    - d. [Staking](#staking)
-      - [stake](#stake)
-      - [redeem](#redeem)
-      - [cooldown](#cooldown)
-      - [claimRewards](#claimRewards)
-    - e. [Governance V2](#governancev2)
-      - [create](#create)
-      - [cancel](#cancel)
-      - [queue](#queue)
-      - [execute](#execute)
-      - [submitVote](#submitVote)
-      - [delegate](#delegate)
-      - [delegateByType](#delegateByType)
-    - f. [Faucets](#faucets)
-      - [mint](#mint)
-
+    - d. [Format User Data](#user-data)
+    
 <br />
 
 # Data Formatting Methods
@@ -115,6 +67,10 @@ all of them requiring the an rpcURL
 The sample code below includes an example of initializing a provider, and using
 it query the helper contract data which can be passed directly into data
 formatting methods.
+
+
+1.) How can I get a list of the recent liquidations on the Aave Polygon V3 market?
+
 
 <details>
 	<summary>Sample Code</summary>
@@ -196,70 +152,6 @@ and [user](#user-data) formatters to compute all of the fields needed for a
 frontend interface.
 
 </details>
-
-<br />
-
-### Subgraph
-
-A subgraph indexes events emitted from a smart contract and exposes a graphql
-endpoing to query data from. Each network where the protocol is deployed is a
-corresponding subgraph. Subgraph can be queried directly using the playground
-(links below) and integrated into applications directly via TheGraph API. Check
-out these guides from
-[Aave](https://docs.aave.com/developers/getting-started/using-graphql) and
-[TheGraph](https://thegraph.com/docs/en/developer/querying-from-your-app/) for
-resources on querying subgraph from a frontend application.
-
-Here are queries for fetching the data fields required for
-[data formatting methods](#data-formatting-methods). The formatting methods are
-the same for V2 and V3, but the queries required to fetch the input data are
-different. Queries will depend on two parameters:
-
-- `pool` : lendingPoolAddressProvider address for the market you are querying
-  data for
-- `user` : user to fetch account data for
-
-<details>
-	<summary>V2</summary>
-
-  <details>
-    <summary>Reserves</summary>
-
-```graphql
-{
-  reserves(
-    where: { pool: "insert_lowercase_lending_pool_address_provider_here" }
-  ) {
-    id
-    symbol
-    name
-    decimals
-    underlyingAsset
-    usageAsCollateralEnabled
-    reserveFactor
-    baseLTVasCollateral
-    averageStableRate
-    stableDebtLastUpdateTimestamp
-    liquidityIndex
-    reserveLiquidationThreshold
-    reserveLiquidationBonus
-    variableBorrowIndex
-    variableBorrowRate
-    liquidityRate
-    totalPrincipalStableDebt
-    totalScaledVariableDebt
-    lastUpdateTimestamp
-    availableLiquidity
-    stableBorrowRate
-    totalLiquidity
-    price {
-      priceInEth
-    }
-  }
-}
-```
-
-1.) How can I get a list of the recent liquidations on the Aave Polygon V3 market?
 
 
 2.) How do I get my token listed on Aave?
