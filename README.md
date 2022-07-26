@@ -26,7 +26,7 @@ node examples/aave
 
 ## Article
 
-[Interact with Aave v3 protocol using web3js](https://mirror.xyz/0x7E0b0363404751346930AF92C80D1fef932Cc48a/aN7uCQkzd2hX4KoOOJigpL82wukw0zT5O7YRdB-6p18).
+[Interact with Aave v3 protocol using web3js](https://medium.com/@fguespe/interact-with-aave-v3-protocol-using-web3js-8716e906ad30).
 
 ## Contact
 
