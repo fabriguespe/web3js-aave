@@ -19,7 +19,7 @@ const pool_contract = new web3.eth.Contract(lendingPoolABI, pool_contract_addr)
 
 const main = async () => {
     //Idenfity the usdc contract and get the supply ammount with it's cdecimals
-    let decimals = await usdc_contract.methods.decimals().call()
+    const decimals = await usdc_contract.methods.decimals().call()
     const tokenSupply = 10 * Math.pow(10, decimals)
     //Check balance. We use 6 as the decimals places that USDC has. Each token has each own decimal places. For reference Ether has 18.
     //We also send the wallet that we want to check the balance of. Doesnt need to be signed or ours, but in this case for the example we use our same wallet.
