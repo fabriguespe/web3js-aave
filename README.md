@@ -18,7 +18,7 @@ Then install packages and run command
 yarn install / npm install
 ```
 
-Finally run this command in node tu see the result.
+Finally run this command in node to see the result.
 
 ```sh
 node examples/aave
